@@ -5,7 +5,7 @@ Welcome to my GitHub portfolio! This repository contains my personal projects, w
 
 ## About Me
 
-Hi, I'm **Kushal Niraula**, a passionate and dedicated IT student with a focus on full-stack web development. I am experienced in technologies such as **JavaScript**, **React**, **Node.js**, **PHP**, **Tailwind CSS**, and **Next.js**. I am currently learning more about the **MERN stack**, **Docker**, and other cutting-edge tools.
+Hi, I'm **Kushal Niraula**, a passionate and dedicated Software Engineer with a focus on full-stack web development. I am experienced in technologies such as **JavaScript**, **React**, **Node.js**, **PHP**, **Tailwind CSS**, and **Next.js**. I am currently learning more about the **MERN stack**, **Docker**, and other cutting-edge tools.
 
 ## What You’ll Find in This Portfolio
 
