@@ -4,7 +4,7 @@ import { ArrowUpRight, Award, Code, FileText, Globe, Sparkles } from "lucide-rea
 import React, { memo, useEffect, useMemo } from "react";
 
 // Memoized Components
-const DownloadCv="https://drive.google.com/file/d/1VRf6gCy6mqmR9LVK69AQCQGBeogurI-r/view?usp=sharing";
+const DownloadCv="https://drive.google.com/file/d/1zl-d8uYBli8eDsyygZXBUyLF7riWgHry/view?usp=sharing";
 const Header = memo(() => (
   <div className="text-center lg:mb-8 mb-2 px-[5%]">
     <div className="inline-block relative group">
@@ -203,7 +203,7 @@ const AboutPage = () => {
                 data-aos="fade-right"
                 data-aos-duration="1300"
               >
-                Kushal Nepal
+                Kushal Niraula
               </span>
             </h2>
             
@@ -212,7 +212,7 @@ const AboutPage = () => {
               data-aos="fade-right"
               data-aos-duration="1500"
             >
-              I am a CSIT student interested in Front-End development. I focus on creating engaging digital experiences and always strive to provide the best solutions for each project.
+              I am a Software Engineer interested in Front-End development. I focus on creating engaging digital experiences and always strive to provide the best solutions for each project.
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">

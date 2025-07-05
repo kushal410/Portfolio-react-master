@@ -5,7 +5,7 @@ const projects = [
   {
     title: "Login Validation",
     imgSrc: "Login.png",
-    link: "https://github.com/kushalnepal/backend",
+    link: "https://github.com/kushal410",
     tags: ["nodejs", "modular", "typescript"],
     category: "website",
     description: "A simple login validation project using Node.js and Modular architecture.",
@@ -23,7 +23,7 @@ const projects = [
   {
     title: "Expensetracker",
     imgSrc: "Expensetracker.png",
-    link: "https://expense-tracker-29e8jeyz4-kushalnepals-projects.vercel.app/",
+    link: "https://expense-tracker-29e8jeyz4-kushalniraulaprojects.vercel.app/",
     tags: ["NEXTjs / Typescript", "Nodejs", "WebApp"],
     category: "webapp",
     description: "An expense tracking web application built using Next.js and Node.js.",
@@ -32,7 +32,7 @@ const projects = [
   {
     title: "TicTacToe Game",
     imgSrc: "Tictactoe.png",
-    link: "https://tic.kushalnepal.com.np/",
+    link: "https://tic.kushaln.com.np/",
     tags: ["HTML&CSS", "JavaScript", "Game"],
     category: "game",
     description: "A simple Tic-Tac-Toe game built with HTML, CSS, and JavaScript.",
@@ -41,7 +41,7 @@ const projects = [
   {
     title: "GPA checker",
     imgSrc: "Gpa-checker.png",
-    link: "https://kushalnepal.github.io/GPA-checker/",
+    link: "https://kushaln.github.io/GPA-checker/",
     tags: ["HTML&CSS", "JavaScript", "App"],
     category: "website",
     description: "A GPA checker tool built with HTML, CSS, and JavaScript.",
@@ -50,7 +50,7 @@ const projects = [
   {
     title: "To do list",
     imgSrc: "mytodolist.png",
-    link: "https://kushalnepal.github.io/Javascript-to-do-list/",
+    link: "https://github.com/kushal410/TODO",
     tags: ["HTML&CSS", "JavaScript", "Web App"],
     category: "webapp",
     description: "A simple to-do list web app built using HTML, CSS, and JavaScript.",
