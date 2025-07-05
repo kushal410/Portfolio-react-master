@@ -24,7 +24,7 @@ Each project contains its own `README.md` with detailed instructions on how to r
 
 - **Email**: kushalniraula41@gmail.com
 - **LinkedIn**: https://www.linkedin.com/in/kushal-niraula-368594287/
-- **Website**: www.kushaln.com.np
+- **Website**: www.niraulakushal.com.np
 
 Thanks for checking out my portfolio! Feel free to explore and let me know if you have any questions or feedback.
 
