@@ -173,9 +173,21 @@ const Home = () => {
 
                 {/* Typing Effect */}
                 <div className="h-8 flex items-center" data-aos="fade-up" data-aos-delay="800">
-                  <span className="text-xl md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent font-light">
-                    {text}
-                  </span>
+                  {WORDS[wordIndex] === "SOFTWARE ENGINEER VIP" ? (
+  <a
+    href="https://www.kushaln.com.np"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-xl md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent font-light underline hover:text-white transition"
+  >
+    {text}
+  </a>
+) : (
+  <span className="text-xl md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent font-light">
+    {text}
+  </span>
+)}
+
                   <span className="w-[3px] h-6 bg-gradient-to-t from-[#6366f1] to-[#a855f7] ml-1 animate-blink"></span>
                 </div>
 
