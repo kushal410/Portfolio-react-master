@@ -1,4 +1,4 @@
-https://portfolio-react-master-p5m7au0mf.vercel.app/#Portofolio
+URL: www.niraulakushal.com.np
 # My Portfolio
 
 Welcome to my GitHub portfolio! This repository contains my personal projects, which demonstrate my skills in various technologies and development methodologies.
