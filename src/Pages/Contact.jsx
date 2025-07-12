@@ -45,10 +45,6 @@ const ContactPage = () => {
       const form = e.target;
       const data = new FormData(form);
 
-      // Add hidden inputs required by FormSubmit here if needed
-      // data.append("_captcha", "false"); // if you want to disable captcha
-      // data.append("_template", "table");
-
       const response = await fetch(form.action, {
         method: "POST",
         body: data,
@@ -141,11 +137,8 @@ const ContactPage = () => {
               onSubmit={handleSubmit}
               className="space-y-6"
             >
-              {/* FormSubmit hidden inputs */}
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_template" value="table" />
-              {/* You can add _next to redirect after submit */}
-              {/* <input type="hidden" name="_next" value="https://yourdomain.com/thankyou" /> */}
 
               <div
                 data-aos="fade-up"
