@@ -33,41 +33,50 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     Swal.fire({
-      title: 'Sending Message...',
-      html: 'Please wait while we send your message',
+      title: "Sending Message...",
+      html: "Please wait while we send your message",
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     try {
-      // Optional delay for UX
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const form = e.target;
+      const data = new FormData(form);
 
-      // Submit the form to FormSubmit backend
-      e.target.submit();
+      // Add hidden inputs required by FormSubmit here if needed
+      // data.append("_captcha", "false"); // if you want to disable captcha
+      // data.append("_template", "table");
 
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your message has been sent successfully!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2500,
-        timerProgressBar: true
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+      if (response.ok) {
+        Swal.fire({
+          title: "Success!",
+          text: "Your message has been sent successfully!",
+          icon: "success",
+          confirmButtonColor: "#6366f1",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        setFormData({ name: "", email: "", message: "" });
+        form.reset();
+      } else {
+        throw new Error("Failed to send message");
+      }
     } catch (error) {
       Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong. Please try again later.',
-        icon: 'error',
-        confirmButtonColor: '#6366f1'
+        title: "Error!",
+        text: "Something went wrong. Please try again later.",
+        icon: "error",
+        confirmButtonColor: "#6366f1",
       });
     } finally {
       setIsSubmitting(false);
@@ -132,10 +141,10 @@ const ContactPage = () => {
               onSubmit={handleSubmit}
               className="space-y-6"
             >
-              {/* FormSubmit Configuration */}
-              <input type="hidden" name="_template" value="table" />
+              {/* FormSubmit hidden inputs */}
               <input type="hidden" name="_captcha" value="false" />
-              {/* Optional: redirect after submit */}
+              <input type="hidden" name="_template" value="table" />
+              {/* You can add _next to redirect after submit */}
               {/* <input type="hidden" name="_next" value="https://yourdomain.com/thankyou" /> */}
 
               <div
@@ -155,6 +164,7 @@ const ContactPage = () => {
                   required
                 />
               </div>
+
               <div
                 data-aos="fade-up"
                 data-aos-delay="200"
@@ -172,6 +182,7 @@ const ContactPage = () => {
                   required
                 />
               </div>
+
               <div
                 data-aos="fade-up"
                 data-aos-delay="300"
@@ -188,6 +199,7 @@ const ContactPage = () => {
                   required
                 />
               </div>
+
               <button
                 data-aos="fade-up"
                 data-aos-delay="400"
@@ -196,7 +208,7 @@ const ContactPage = () => {
                 className="w-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white py-4 rounded-xl font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#6366f1]/20 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <Send className="w-5 h-5" />
-                {isSubmitting ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
 
