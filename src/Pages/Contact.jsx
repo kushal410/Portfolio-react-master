@@ -3,33 +3,8 @@ import "aos/dist/aos.css";
 import { Mail, MessageSquare, Send, Share2, User } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import Comment from "../components/Comment"; // Assuming 'Komentar' means 'Comment'
+import Comment from "../components/Comment";
 import SocialLinks from "../components/SocialLinks";
-
-const appPassword = "sxpf sdzd mvrc ggmg"
-
-const onSubmit = async (event) => {
-  event.preventDefault();
-  const formData = new FormData(event.target);
-
-  formData.append("access_key", "baef34d6-6a81-499d-b9d6-ee7ecbed58a2");
-
-  const object = Object.fromEntries(formData);
-  const json = JSON.stringify(object);
-
-  const res = await fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: json
-  }).then((res) => res.json());
-
-  if (res.success) {
-    console.log("Success", res);
-  }
-};
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -67,24 +42,21 @@ const ContactPage = () => {
     });
 
     try {
-      // Get form data
-      const form = e.target;
-      const formData = new FormData(form);
+      // Optional delay for UX
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Submit form
-      await form.submit(); // You may want to implement an API call here instead of form.submit()
+      // Submit the form to FormSubmit backend
+      e.target.submit();
 
-      // Show success message
       Swal.fire({
         title: 'Success!',
         text: 'Your message has been sent successfully!',
         icon: 'success',
         confirmButtonColor: '#6366f1',
-        timer: 2000,
+        timer: 2500,
         timerProgressBar: true
       });
 
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -154,15 +126,17 @@ const ContactPage = () => {
               <Share2 className="w-10 h-10 text-[#6366f1] opacity-50" />
             </div>
 
-            <form 
-              action="https://formsubmit.co/kushal121231@gmail.com"
+            <form
+              action="https://formsubmit.co/kushalniraula41@gmail.com"
               method="POST"
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit}
               className="space-y-6"
             >
               {/* FormSubmit Configuration */}
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
+              {/* Optional: redirect after submit */}
+              {/* <input type="hidden" name="_next" value="https://yourdomain.com/thankyou" /> */}
 
               <div
                 data-aos="fade-up"
