@@ -6,7 +6,6 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 const Comment = memo(({ comment, formatDate, index }) => (
     <div 
         className="px-4 pt-4 pb-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group hover:shadow-lg hover:-translate-y-0.5"
-        
     >
         <div className="flex items-start gap-3 ">
             {comment.profileImage ? (
@@ -179,32 +178,50 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
 });
 
 const Comentar = () => {
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(() => {
+      // Load comments from localStorage on initial render
+      const saved = localStorage.getItem("comments");
+      return saved ? JSON.parse(saved) : [];
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        // Initialize AOS
         AOS.init({
             once: false,
             duration: 1000,
         });
     }, []);
 
-    // This part is removed to avoid Firebase usage
-    // Firebase setup and logic has been eliminated.
-
     const handleCommentSubmit = useCallback(async ({ newComment, userName, imageFile }) => {
         setError('');
         setIsSubmitting(true);
         
         try {
-            // In Firebase removal, imageFile will not be uploaded.
-            // Add the comment directly to state or a local storage.
-            setComments((prevComments) => [
-                ...prevComments,
-                { userName, content: newComment, profileImage: imageFile, createdAt: new Date() },
-            ]);
+            // Prepare profileImage URL or base64 (imageFile is a File object)
+            // For localStorage, store base64 string or null
+            let profileImage = null;
+            if (imageFile) {
+                profileImage = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(imageFile);
+                });
+            }
+
+            const newEntry = {
+                userName,
+                content: newComment,
+                profileImage,
+                createdAt: new Date().toISOString(),
+            };
+
+            setComments(prevComments => {
+                const updated = [...prevComments, newEntry];
+                localStorage.setItem("comments", JSON.stringify(updated)); // Save immediately
+                return updated;
+            });
         } catch (error) {
             setError('Failed to post comment. Please try again.');
             console.error('Error adding comment: ', error);
