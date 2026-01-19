@@ -116,7 +116,7 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
 const AboutPage = () => {
   // Memoized calculations
   const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
-    const startDate = new Date("2024-02-06");
+    const startDate = new Date("2023-09-07");
     const today = new Date();
     const experience = today.getFullYear() - startDate.getFullYear() - 
       (today < new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate()) ? 1 : 0);
