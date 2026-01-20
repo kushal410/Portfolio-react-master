@@ -1,71 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile Page</title>
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import ProfileImage from "./components/ProfileImage"; // import the image component
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  
-  <style>
-    /* Animations */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-    @keyframes spin-slower {
-      to { transform: rotate(360deg); }
-    }
-    .animate-bounce-slow { animation: bounce 3s infinite; }
-    .animate-pulse-slow { animation: pulse 3s infinite; }
-    .animate-spin-slower { animation: spin-slower 8s linear infinite; }
-    .animate-float { animation: float 6s ease-in-out infinite; }
-  </style>
-</head>
-<body class="bg-gray-900 text-white">
-
-  <div class="px-5 lg:px-20 mt-10">
-    <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-      <!-- LEFT SIDE content -->
-      <div class="space-y-6 text-center lg:text-left">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold">
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">Hello, I'm</span>
-          <span class="block mt-2 text-gray-200">Kushal Niraula</span>
-        </h2>
-        <p class="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed text-justify">
-          I am a Software Engineer interested in Front-End development. I focus on creating engaging digital experiences and always strive to provide the best solutions for each project.
-        </p>
-      </div>
-
-      <!-- RIGHT SIDE Profile Image -->
-      <div class="flex justify-end items-center sm:p-12 sm:py-0 sm:pb-0 p-0 py-2 pb-2" data-aos="fade-up" data-aos-duration="1000">
-        <div class="relative group">
-          <!-- Background gradient circles -->
-          <div class="absolute -inset-6 opacity-25 hidden sm:block z-0">
-            <div class="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-500 to-purple-600 rounded-full blur-2xl animate-spin-slower"></div>
-            <div class="absolute inset-0 bg-gradient-to-l from-fuchsia-500 via-rose-500 to-pink-600 rounded-full blur-2xl animate-pulse-slow opacity-50"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-blue-600 via-cyan-500 to-teal-400 rounded-full blur-2xl animate-float opacity-50"></div>
-          </div>
-
-          <!-- Profile Image -->
-          <div class="relative w-72 h-72 sm:w-80 sm:h-80 rounded-full overflow-hidden shadow-[0_0_40px_rgba(120,119,198,0.3)] transition-all duration-700 group-hover:scale-105">
-            <div class="absolute inset-0 border-4 border-white/20 rounded-full z-20"></div>
-            <img src="photo.jpg" alt="Profile" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2">
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- AOS JS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
+function App() {
+  useEffect(() => {
     AOS.init({ once: false });
-  </script>
-</body>
-</html>
+  }, []);
+
+  return (
+    <div className="h-auto text-white px-[5%] sm:px-[5%] lg:px-[10%] mt-10">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        
+        {/* LEFT SIDE content */}
+        <div className="space-y-6 text-center lg:text-left">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">Hello, I'm</span>
+            <span className="block mt-2 text-gray-200">Kushal Niraula</span>
+          </h2>
+          <p className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed text-justify">
+            I am a Software Engineer interested in Front-End development. I focus on creating engaging digital experiences and always strive to provide the best solutions for each project.
+          </p>
+        </div>
+
+        {/* RIGHT SIDE image */}
+        <ProfileImage />
+      </div>
+    </div>
+  );
+}
+
+export default App;
