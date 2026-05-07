@@ -1,4 +1,5 @@
-URL: www.niraulakushal.com.np
+URL: https://www.kushalvip.tech/
+www.niraulakushal.com.np
 # My Portfolio
 
 Welcome to my GitHub portfolio! This repository contains my personal projects, which demonstrate my skills in various technologies and development methodologies.
