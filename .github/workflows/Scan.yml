@@ -1,13 +1,15 @@
-name: strix-scheduled-scan
+name: strix-push-scan
 
 on:
-  schedule:
-    - cron: "15 18 * * 0" # Sun→Mon midnight (12am) Nepal time = 18:15 UTC Sun
+  push:
+    branches:
+      - "**"    # Run on every branch push
   workflow_dispatch:
 
 jobs:
   security-scan:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v6
         with:
