@@ -10,15 +10,25 @@ function firstNameOf(name) {
 const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
 const MALE_VOICE_HINTS = [
-  "male", "david", "daniel", "alex", "fred", "mark", "george", "james",
+  "male", "david", "daniel", "alex", "mark", "george", "james",
   "arthur", "oliver", "aaron", "gordon", "justin", "ryan", "tom", "guy",
-  "thomas", "eric", "brian", "kevin", "rishi", "diego",
+  "thomas", "eric", "brian", "kevin", "rishi", "diego", "eddy", "reed",
+  "rocko", "henry", "liam", "noah",
 ];
 const FEMALE_VOICE_HINTS = [
   "female", "samantha", "karen", "moira", "tessa", "victoria", "fiona",
   "kate", "serena", "susan", "allison", "ava", "zira", "hazel", "zoe",
   "nicky", "amelie", "ellen", "joana", "paulina", "monica", "salli",
-  "joanna", "kendra", "kimberly", "ivy",
+  "joanna", "kendra", "kimberly", "ivy", "flo", "shelley", "sandy",
+  "grandma", "kathy",
+];
+// Apple's classic "novelty" voices (Albert, Fred, Ralph, Junior, etc.) happen
+// to read as male but sound comedic/robotic — wrong tone for a résumé bot.
+const NOVELTY_VOICE_HINTS = [
+  "albert", "fred", "ralph", "junior", "bad news", "good news", "bahh",
+  "bells", "boing", "bubbles", "cellos", "jester", "organ", "superstar",
+  "trinoids", "whisper", "wobble", "zarvox", "princess", "hysterical",
+  "deranged", "grandpa",
 ];
 
 function pickMaleVoice(voices) {
@@ -27,9 +37,10 @@ function pickMaleVoice(voices) {
   const pool = english.length ? english : voices;
   const isMaleNamed = (name) => MALE_VOICE_HINTS.some((h) => name.includes(h));
   const isFemaleNamed = (name) => FEMALE_VOICE_HINTS.some((h) => name.includes(h));
+  const isNovelty = (name) => NOVELTY_VOICE_HINTS.some((h) => name.includes(h));
   return pool.find((v) => {
     const name = v.name.toLowerCase();
-    return isMaleNamed(name) && !isFemaleNamed(name);
+    return isMaleNamed(name) && !isFemaleNamed(name) && !isNovelty(name);
   }) || null;
 }
 
@@ -41,7 +52,6 @@ const ChatWidget = () => {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [speakingIndex, setSpeakingIndex] = useState(null);
-  const [voices, setVoices] = useState(() => (speechSupported ? window.speechSynthesis.getVoices() : []));
 
   const logRef = useRef(null);
   const inputRef = useRef(null);
@@ -83,13 +93,8 @@ const ChatWidget = () => {
 
   useEffect(() => {
     if (!speechSupported) return undefined;
-    const loadVoices = () => setVoices(window.speechSynthesis.getVoices());
-    loadVoices();
-    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
-    return () => {
-      window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
-      window.speechSynthesis.cancel();
-    };
+    window.speechSynthesis.getVoices(); // kicks off Chrome's async voice list load early
+    return () => window.speechSynthesis.cancel();
   }, []);
 
   const toggleSpeak = (index, text) => {
@@ -100,11 +105,16 @@ const ChatWidget = () => {
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
-    const maleVoice = pickMaleVoice(voices);
+    // Fetch voices fresh right here (not from earlier-cached state): Safari
+    // silently ignores utterance.voice if the SpeechSynthesisVoice object
+    // wasn't obtained from a getVoices() call made just before speak().
+    const maleVoice = pickMaleVoice(window.speechSynthesis.getVoices());
     if (maleVoice) {
       utterance.voice = maleVoice;
+      utterance.lang = maleVoice.lang;
     } else {
-      utterance.pitch = 0.8; // best-effort deeper tone when no explicit male voice is installed
+      utterance.pitch = 0.65; // best-effort deeper tone when no explicit male voice is installed
+      utterance.rate = 0.95;
     }
     utterance.onend = () => setSpeakingIndex(null);
     utterance.onerror = () => setSpeakingIndex(null);
