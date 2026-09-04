@@ -9,6 +9,30 @@ function firstNameOf(name) {
 
 const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
+const MALE_VOICE_HINTS = [
+  "male", "david", "daniel", "alex", "fred", "mark", "george", "james",
+  "arthur", "oliver", "aaron", "gordon", "justin", "ryan", "tom", "guy",
+  "thomas", "eric", "brian", "kevin", "rishi", "diego",
+];
+const FEMALE_VOICE_HINTS = [
+  "female", "samantha", "karen", "moira", "tessa", "victoria", "fiona",
+  "kate", "serena", "susan", "allison", "ava", "zira", "hazel", "zoe",
+  "nicky", "amelie", "ellen", "joana", "paulina", "monica", "salli",
+  "joanna", "kendra", "kimberly", "ivy",
+];
+
+function pickMaleVoice(voices) {
+  if (!voices || !voices.length) return null;
+  const english = voices.filter((v) => /^en/i.test(v.lang));
+  const pool = english.length ? english : voices;
+  const isMaleNamed = (name) => MALE_VOICE_HINTS.some((h) => name.includes(h));
+  const isFemaleNamed = (name) => FEMALE_VOICE_HINTS.some((h) => name.includes(h));
+  return pool.find((v) => {
+    const name = v.name.toLowerCase();
+    return isMaleNamed(name) && !isFemaleNamed(name);
+  }) || null;
+}
+
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [resumeName, setResumeName] = useState(null);
@@ -17,6 +41,7 @@ const ChatWidget = () => {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [speakingIndex, setSpeakingIndex] = useState(null);
+  const [voices, setVoices] = useState(() => (speechSupported ? window.speechSynthesis.getVoices() : []));
 
   const logRef = useRef(null);
   const inputRef = useRef(null);
@@ -58,7 +83,13 @@ const ChatWidget = () => {
 
   useEffect(() => {
     if (!speechSupported) return undefined;
-    return () => window.speechSynthesis.cancel();
+    const loadVoices = () => setVoices(window.speechSynthesis.getVoices());
+    loadVoices();
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+    return () => {
+      window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+      window.speechSynthesis.cancel();
+    };
   }, []);
 
   const toggleSpeak = (index, text) => {
@@ -69,6 +100,12 @@ const ChatWidget = () => {
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
+    const maleVoice = pickMaleVoice(voices);
+    if (maleVoice) {
+      utterance.voice = maleVoice;
+    } else {
+      utterance.pitch = 0.8; // best-effort deeper tone when no explicit male voice is installed
+    }
     utterance.onend = () => setSpeakingIndex(null);
     utterance.onerror = () => setSpeakingIndex(null);
     setSpeakingIndex(index);
