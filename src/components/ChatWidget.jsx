@@ -9,39 +9,15 @@ function firstNameOf(name) {
 
 const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
-const MALE_VOICE_HINTS = [
-  "male", "david", "daniel", "alex", "mark", "george", "james",
-  "arthur", "oliver", "aaron", "gordon", "justin", "ryan", "tom", "guy",
-  "thomas", "eric", "brian", "kevin", "rishi", "diego", "eddy", "reed",
-  "rocko", "henry", "liam", "noah",
-];
-const FEMALE_VOICE_HINTS = [
-  "female", "samantha", "karen", "moira", "tessa", "victoria", "fiona",
-  "kate", "serena", "susan", "allison", "ava", "zira", "hazel", "zoe",
-  "nicky", "amelie", "ellen", "joana", "paulina", "monica", "salli",
-  "joanna", "kendra", "kimberly", "ivy", "flo", "shelley", "sandy",
-  "grandma", "kathy",
-];
-// Apple's classic "novelty" voices (Albert, Fred, Ralph, Junior, etc.) happen
-// to read as male but sound comedic/robotic — wrong tone for a résumé bot.
-const NOVELTY_VOICE_HINTS = [
-  "albert", "fred", "ralph", "junior", "bad news", "good news", "bahh",
-  "bells", "boing", "bubbles", "cellos", "jester", "organ", "superstar",
-  "trinoids", "whisper", "wobble", "zarvox", "princess", "hysterical",
-  "deranged", "grandpa",
-];
-
+// Only ever pick a voice explicitly labeled "male" (e.g. "Google UK English
+// Male", "Microsoft David - Male"). Anything less explicit is unreliable
+// across devices, so every other case falls back to forcing a deep pitch
+// on whatever voice is available instead of guessing at names.
 function pickMaleVoice(voices) {
   if (!voices || !voices.length) return null;
   const english = voices.filter((v) => /^en/i.test(v.lang));
   const pool = english.length ? english : voices;
-  const isMaleNamed = (name) => MALE_VOICE_HINTS.some((h) => name.includes(h));
-  const isFemaleNamed = (name) => FEMALE_VOICE_HINTS.some((h) => name.includes(h));
-  const isNovelty = (name) => NOVELTY_VOICE_HINTS.some((h) => name.includes(h));
-  return pool.find((v) => {
-    const name = v.name.toLowerCase();
-    return isMaleNamed(name) && !isFemaleNamed(name) && !isNovelty(name);
-  }) || null;
+  return pool.find((v) => /male/i.test(v.name) && !/female/i.test(v.name)) || null;
 }
 
 const ChatWidget = () => {
@@ -113,8 +89,10 @@ const ChatWidget = () => {
       utterance.voice = maleVoice;
       utterance.lang = maleVoice.lang;
     } else {
-      utterance.pitch = 0.65; // best-effort deeper tone when no explicit male voice is installed
-      utterance.rate = 0.95;
+      // No voice explicitly labeled "male" on this device — force a deep
+      // pitch on whichever voice is default so it never reads as female.
+      utterance.pitch = 0.3;
+      utterance.rate = 0.92;
     }
     utterance.onend = () => setSpeakingIndex(null);
     utterance.onerror = () => setSpeakingIndex(null);
