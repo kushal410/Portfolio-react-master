@@ -200,6 +200,31 @@
   text-underline-offset: 2px;
 }
 
+.rcb-speak {
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-left: 0.15rem;
+  border: none;
+  background: transparent;
+  color: #7c6fa8;
+  cursor: pointer;
+  padding: 0.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.35rem;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.rcb-speak:hover {
+  color: #e2d3fd;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rcb-speak.speaking {
+  color: #22c55e;
+}
+
 .rcb-typing-dots {
   display: inline-flex;
   gap: 0.25rem;

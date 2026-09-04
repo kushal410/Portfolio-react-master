@@ -1,4 +1,4 @@
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle, Send, Volume2, VolumeX, X } from "lucide-react";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { answer, getOpeningMessage, hasResume, linkify, setResume } from "../lib/chatEngine";
 import "./ChatWidget.css";
@@ -7,6 +7,8 @@ function firstNameOf(name) {
   return name ? name.split(" ")[0] : "kushal";
 }
 
+const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [resumeName, setResumeName] = useState(null);
@@ -14,6 +16,7 @@ const ChatWidget = () => {
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [speakingIndex, setSpeakingIndex] = useState(null);
 
   const logRef = useRef(null);
   const inputRef = useRef(null);
@@ -45,6 +48,32 @@ const ChatWidget = () => {
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [messages, typing]);
+
+  useEffect(() => {
+    if (!open && speechSupported) {
+      window.speechSynthesis.cancel();
+      setSpeakingIndex(null);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!speechSupported) return undefined;
+    return () => window.speechSynthesis.cancel();
+  }, []);
+
+  const toggleSpeak = (index, text) => {
+    if (!speechSupported) return;
+    window.speechSynthesis.cancel();
+    if (speakingIndex === index) {
+      setSpeakingIndex(null);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setSpeakingIndex(null);
+    utterance.onerror = () => setSpeakingIndex(null);
+    setSpeakingIndex(index);
+    window.speechSynthesis.speak(utterance);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,6 +132,16 @@ const ChatWidget = () => {
                 <span className="rcb-text" dangerouslySetInnerHTML={{ __html: linkify(m.text) }} />
               ) : (
                 <span className="rcb-text">{m.text}</span>
+              )}
+              {m.role === "bot" && speechSupported && (
+                <button
+                  type="button"
+                  className={`rcb-speak ${speakingIndex === i ? "speaking" : ""}`}
+                  aria-label={speakingIndex === i ? "Stop reading aloud" : "Read this message aloud"}
+                  onClick={() => toggleSpeak(i, m.text)}
+                >
+                  {speakingIndex === i ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                </button>
               )}
             </div>
           ))}
