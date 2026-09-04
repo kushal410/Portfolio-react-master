@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AnimatedBackground from "./components/Background";
+import ChatWidget from "./components/ChatWidget";
 import Navbar from "./components/Navbar";
 import ProjectDetails from "./components/ProjectDetail";
 import "./index.css";
@@ -40,6 +41,7 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
               </span>
             </center>
           </footer>
+          <ChatWidget />
         </>
       )}
     </>
@@ -49,6 +51,7 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
 const ProjectPageLayout = () => (
   <>
     <ProjectDetails />
+    <ChatWidget />
     <footer>
       <center>
         <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
