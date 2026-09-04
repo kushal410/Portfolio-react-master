@@ -39,8 +39,8 @@ const ChatWidget = () => {
   }, []);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
+    if (open && !busy) inputRef.current?.focus();
+  }, [open, busy]);
 
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -87,7 +87,7 @@ const ChatWidget = () => {
             <span />
             <span />
           </span>
-          <span className="rcb-title">zsh — {resumeName || "..."} (résumé bot)</span>
+          <span className="rcb-title">{resumeName || "..."} AI</span>
           <button type="button" className="rcb-close" aria-label="Close chat" onClick={() => setOpen(false)}>
             <X size={16} />
           </button>

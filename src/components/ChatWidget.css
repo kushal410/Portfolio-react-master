@@ -32,7 +32,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: #22c55e;
   flex-shrink: 0;
 }
 
@@ -41,7 +41,7 @@
   position: absolute;
   inset: -0.35rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: #22c55e;
   opacity: 0.5;
   animation: rcb-pulse 1.8s ease-out infinite;
 }
